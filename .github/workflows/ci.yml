@@ -34,15 +34,14 @@ jobs:
         run: npm install
 
       - name: Install Playwright browsers
-        uses: microsoft/playwright-github-action@v1
-        with:
-          working-directory: tests
+        working-directory: tests
+        run: npx playwright install
 
-      - name: Start backend
+      - name: Start backend server
         working-directory: backend
         run: node server.js &
 
-      - name: Start frontend
+      - name: Start frontend server
         working-directory: frontend
         run: npm run dev &
 
