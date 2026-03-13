@@ -7,8 +7,8 @@ on:
     branches: [ main ]
 
 jobs:
-
   test:
+
     runs-on: ubuntu-latest
 
     steps:
@@ -22,47 +22,40 @@ jobs:
           node-version: 20
 
       - name: Install backend dependencies
-        run: |
-          cd backend
-          npm install
+        working-directory: backend
+        run: npm install
 
       - name: Install frontend dependencies
-        run: |
-          cd frontend
-          npm install
+        working-directory: frontend
+        run: npm install
 
       - name: Install test dependencies
-        run: |
-          cd tests
-          npm install
+        working-directory: tests
+        run: npm install
 
       - name: Install Playwright browsers
-        run: |
-          cd tests
-          npm playwright install --with-deps
+        uses: microsoft/playwright-github-action@v1
+        with:
+          working-directory: tests
 
-      - name: Start backend server
-        run: |
-          cd backend
-          node server.js &
+      - name: Start backend
+        working-directory: backend
+        run: node server.js &
 
-      - name: Start frontend server
-        run: |
-          cd frontend
-          npm run dev &
+      - name: Start frontend
+        working-directory: frontend
+        run: npm run dev &
 
-      - name: Wait for servers to start
+      - name: Wait for servers
         run: sleep 10
 
       - name: Run API tests
-        run: |
-          cd tests
-          npm test
+        working-directory: tests
+        run: npm test
 
       - name: Run UI tests
-        run: |
-          cd tests
-          npx playwright test ui
+        working-directory: tests
+        run: npx playwright test ui
 
       - name: Upload Playwright report
         if: always()
