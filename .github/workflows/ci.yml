@@ -39,7 +39,7 @@ jobs:
       - name: Install Playwright browsers
         run: |
           cd tests
-          npx playwright install --with-deps
+          npm playwright install --with-deps
 
       - name: Start backend server
         run: |
